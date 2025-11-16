@@ -278,7 +278,7 @@
       justify-content: center;
     }
 
-    /* Ocultar controles nativos en reproductores hasta que se reproduczca */
+    /* Ocultar controles nativos en reproductores hasta que se reproduzca */
     video:not([controls]) {
       pointer-events: none;
     }
@@ -681,20 +681,6 @@
     const playerEl = isRadio ? audio : video;
     const isHls = /\.(m3u8|m3u)/i.test(originalUrl);
     const isDash = /\.mpd$/i.test(originalUrl);
-    let attempt = 0;
-
-    // Función para obtener URL con proxy rotativo
-    function getProxiedUrl() {
-      if (attempt === 0) return originalUrl;
-      return PROXIES[attempt] + encodeURIComponent(originalUrl);
-    }
-
-    // Función para mostrar error
-    const showError = (msg) => {
-      player.classList.add('error');
-      player.innerHTML = `<div>Canal no disponible<br><small>${msg}</small></div>`;
-      setTimeout(initPlayer, 5000); // Reset después de 5s
-    };
 
     // Reset player
     initPlayer();
@@ -710,45 +696,58 @@
       video.controls = true;
     }
 
+    const proxiedUrl = PROXY_BASE + encodeURIComponent(originalUrl);
+
     const tryPlay = () => {
-      const url = getProxiedUrl();
       if (isDash && window.dashjs) {
         currentDash = dashjs.MediaPlayer().create();
         currentDash.attachVideo(playerEl);
-        currentDash.setSource(url);
-        playerEl.play().catch(handleError);
+        currentDash.setSource(proxiedUrl);
+        playerEl.play().catch(() => showError('Error al reproducir DASH'));
       } else if (isHls && Hls.isSupported()) {
-        currentHls = new Hls({ enableWorker: false, lowLatencyMode: true });
-        currentHls.loadSource(url);
+        currentHls = new Hls({
+          enableWorker: false,
+          lowLatencyMode: true,
+          xhrSetup: (xhr, url) => {
+            if (!url.startsWith('/api/proxy')) {
+              const proxied = `/api/proxy?url=${encodeURIComponent(url)}`;
+              xhr.open('GET', proxied);
+            }
+          }
+        });
+
+        currentHls.loadSource(proxiedUrl);
         currentHls.attachMedia(playerEl);
-        currentHls.on(Hls.Events.MANIFEST_PARSED, () => playerEl.play().catch(handleError));
-        currentHls.on(Hls.Events.ERROR, (e, d) => { if (d.fatal) handleError(); });
+
+        currentHls.on(Hls.Events.MANIFEST_PARSED, () => {
+          playerEl.play().catch(() => showError('Error al iniciar HLS'));
+        });
+
+        currentHls.on(Hls.Events.ERROR, (event, data) => {
+          if (data.fatal) {
+            console.error('HLS Fatal Error:', data);
+            showError('Stream no disponible (HLS)');
+          }
+        });
       } else if (isHls && playerEl.canPlayType('application/vnd.apple.mpegurl')) {
-        playerEl.src = url;
-        playerEl.play().catch(handleError);
+        playerEl.src = proxiedUrl;
+        playerEl.play().catch(() => showError('Error nativo HLS'));
       } else {
-        playerEl.src = url;
-        playerEl.play().catch(handleError);
+        playerEl.src = proxiedUrl;
+        playerEl.play().catch(() => showError('No se puede reproducir'));
       }
 
-      // Detectar si es audio-only
+      // Detección robusta de video (espera 1 segundo)
       playerEl.addEventListener('loadedmetadata', () => {
-        if (playerEl.videoTracks.length === 0 && playerEl.audioTracks.length > 0 && !isRadio) {
-          radioPlaceholder.style.display = 'flex';
-          radioPlaceholder.innerHTML = `Audio only: ${name}`;
-          video.style.display = 'none';
-        }
+        setTimeout(() => {
+          if (video.videoWidth > 0 && video.videoHeight > 0) {
+            radioPlaceholder.style.display = 'none';
+          } else {
+            radioPlaceholder.style.display = 'flex';
+            radioPlaceholder.innerHTML = `Solo audio: ${name}`;
+          }
+        }, 1000);
       }, { once: true });
-    };
-
-    const handleError = () => {
-      attempt++;
-      if (attempt < PROXIES.length) {
-        console.warn('Retry with proxy ' + attempt + ': ' + originalUrl);
-        tryPlay();
-      } else {
-        showError('Error de CORS o formato no soportado');
-      }
     };
 
     tryPlay();
@@ -764,6 +763,12 @@
     }, 10000);
   }
 
+  function showError(msg) {
+    player.classList.add('error');
+    player.innerHTML = `<div>Canal no disponible<br><small>${msg}</small></div>`;
+    setTimeout(initPlayer, 5000);
+  }
+
   window.addEventListener('resize', () => {});
   document.addEventListener('keydown', e => {
     if (e.key === 'Enter' && document.activeElement === searchInput) {
@@ -771,6 +776,9 @@
       displayChannels(filtered, currentMode === 'radio');
     }
   });
+
+  // Carga inicial
+  loadAllChannels();
 </script>
 
 </body>
