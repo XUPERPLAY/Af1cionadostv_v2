@@ -15,7 +15,7 @@ module.exports = async (req, res) => {
       // Descomenta para más (agrega una por una)
       // { name: 'TDT Channels', url: 'https://api.allorigins.win/raw?url=https://www.tdtchannels.com/lists/tv.json', group: 'TDT' },
       // { name: 'Makanada', url: 'https://gist.githubusercontent.com/killermina/f85b5faace03d9d0eedd80328ea40ab5/raw/87005309ce21412193fbd3b432bb1b29fdf37b87/makanada.json', group: 'Makanada' },
-      // ... resto de categorías/países
+      // ... resto
     ];
 
     // Fetch paralelo con timeout (5s por fuente)
@@ -34,7 +34,7 @@ module.exports = async (req, res) => {
           data = parseM3U(text);
         }
         const channels = Array.isArray(data) ? data : [];
-        return channels.slice(0, 100).map(ch => ({ ...ch, group: source.group })).filter(ch => ch.url && ch.url !== 'No disponible');
+        return channels.slice(0, 200).map(ch => ({ ...ch, group: source.group })).filter(ch => ch.url && ch.url !== 'No disponible');
       } catch (err) {
         console.error(`Error en ${source.name}:`, err.message);
         return [];
@@ -52,12 +52,19 @@ module.exports = async (req, res) => {
       m3uContent += `${ch.url}\n`;
     });
 
-    res.setHeader('Content-Type', 'application/vnd.apple.mpegurl');
-    res.setHeader('Cache-Control', 'public, max-age=300'); // Cache 5min
+    // Headers para FORZAR descarga (no reproducción)
+    res.setHeader('Content-Type', 'text/plain'); // Cambiado para evitar media play
+    res.setHeader('Content-Disposition', 'attachment; filename="playlist.m3u"');
+    res.setHeader('Content-Length', Buffer.byteLength(m3uContent, 'utf8'));
+    res.setHeader('Cache-Control', 'public, max-age=600'); // Cache 10min
+
     res.status(200).send(m3uContent);
   } catch (error) {
     console.error('Error general:', error);
-    res.status(500).send('#EXTM3U\n#EXTINF:-1 group-title="Error",Error al generar playlist\nhttp://example.com/error');
+    const errorM3U = '#EXTM3U\n#EXTINF:-1 group-title="Error",Error al generar playlist\nhttp://example.com/error';
+    res.setHeader('Content-Type', 'text/plain');
+    res.setHeader('Content-Disposition', 'attachment; filename="error.m3u"');
+    res.status(500).send(errorM3U);
   }
 };
 
