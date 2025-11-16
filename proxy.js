@@ -20,30 +20,47 @@ module.exports = async (req, res) => {
       }
     });
 
+    if (!response.ok) {
+      res.status(response.status).send('Error en el servidor remoto');
+      return;
+    }
+
     const contentType = response.headers.get('content-type') || '';
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET');
     res.setHeader('Cache-Control', 'no-cache');
 
+    // Reescribe M3U8: todos los segmentos pasan por /api/proxy
     if (contentType.includes('application/vnd.apple.mpegurl') || targetUrl.endsWith('.m3u8')) {
       let body = await response.text();
       const baseUrl = targetUrl.substring(0, targetUrl.lastIndexOf('/'));
-      body = body.replace(/(https?:\/\/[^#\s]+)|([^#\s"]+\.ts[^#\s"]*)/g, (match, p1, p2) => {
-        if (p1) return `/api/proxy?url=${encodeURIComponent(p1)}`;
-        if (p2) {
-          const absolute = p2.startsWith('http') ? p2 : new URL(p2, baseUrl).href;
-          return `/api/proxy?url=${encodeURIComponent(absolute)}`;
-        }
-        return match;
+
+      body = body.replace(/((?:https?:\/\/|\/)[^\s"]+\.ts[^\s"]*)/gi, (match) => {
+        const absolute = match.startsWith('http') ? match : new URL(match, baseUrl).href;
+        return `/api/proxy?url=${encodeURIComponent(absolute)}`;
       });
+
+      // Reescribe también líneas con #EXT-X-STREAM-INF (master playlist)
+      body = body.replace(/((?:https?:\/\/|\/)[^\s"]+\.m3u8[^\s"]*)/gi, (match) => {
+        const absolute = match.startsWith('http') ? match : new URL(match, baseUrl).href;
+        return `/api/proxy?url=${encodeURIComponent(absolute)}`;
+      });
+
       res.setHeader('Content-Type', 'application/vnd.apple.mpegurl');
       res.send(body);
-    } else {
+    } 
+    // Para segmentos .ts, .aac, etc.
+    else if (targetUrl.includes('.ts') || targetUrl.includes('.aac') || targetUrl.includes('.mp4')) {
+      res.setHeader('Content-Type', contentType || 'video/mp2t');
+      response.body.pipe(res);
+    } 
+    // Otros archivos (imágenes, etc.)
+    else {
       res.setHeader('Content-Type', contentType);
       response.body.pipe(res);
     }
   } catch (err) {
-    console.error(err);
-    res.status(500).send('Error en proxy');
+    console.error('Proxy error:', err);
+    res.status(500).send('Error interno del proxy');
   }
 };
