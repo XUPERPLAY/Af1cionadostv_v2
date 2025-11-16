@@ -1,63 +1,31 @@
-const fetch = require('node-fetch'); // Vercel lo incluye por defecto
-
 module.exports = async (req, res) => {
   try {
-    // Fuentes de países (como en tu HTML)
-    const countrySources = [
-      { name: 'Andorra', url: 'https://iptv-org.github.io/iptv/countries/ad.m3u' },
-      { name: 'United Arab Emirates', url: 'https://iptv-org.github.io/iptv/countries/ae.m3u' },
-      { name: 'México', url: 'https://iptv-org.github.io/iptv/countries/mx.m3u' },
-      { name: 'USA', url: 'https://iptv-org.github.io/iptv/countries/us.m3u' },
-      { name: 'Argentina', url: 'https://iptv-org.github.io/iptv/countries/ar.m3u' },
-      { name: 'Reino Unido', url: 'https://iptv-org.github.io/iptv/countries/gb.m3u' },
-      { name: 'Francia', url: 'https://iptv-org.github.io/iptv/countries/fr.m3u' },
-      { name: 'Brasil', url: 'https://iptv-org.github.io/iptv/countries/br.m3u' }
-    ];
-
-    // Fuentes de categorías (incluyendo A1X, etc.)
-    const categorySources = [
-      { name: 'Animation', url: 'https://iptv-org.github.io/iptv/categories/animation.m3u', group: 'Animation' },
-      { name: 'Auto', url: 'https://iptv-org.github.io/iptv/categories/auto.m3u', group: 'Auto' },
-      { name: 'Business', url: 'https://iptv-org.github.io/iptv/categories/business.m3u', group: 'Business' },
-      { name: 'Classic', url: 'https://iptv-org.github.io/iptv/categories/classic.m3u', group: 'Classic' },
-      { name: 'Comedy', url: 'https://iptv-org.github.io/iptv/categories/comedy.m3u', group: 'Comedy' },
-      { name: 'Cooking', url: 'https://iptv-org.github.io/iptv/categories/cooking.m3u', group: 'Cooking' },
-      { name: 'Culture', url: 'https://iptv-org.github.io/iptv/categories/culture.m3u', group: 'Culture' },
-      { name: 'Documentary', url: 'https://iptv-org.github.io/iptv/categories/documentary.m3u', group: 'Documentary' },
-      { name: 'Education', url: 'https://iptv-org.github.io/iptv/categories/education.m3u', group: 'Education' },
-      { name: 'Entertainment', url: 'https://iptv-org.github.io/iptv/categories/entertainment.m3u', group: 'Entertainment' },
-      { name: 'Family', url: 'https://iptv-org.github.io/iptv/categories/family.m3u', group: 'Family' },
-      { name: 'General', url: 'https://iptv-org.github.io/iptv/categories/general.m3u', group: 'General' },
-      { name: 'Kids', url: 'https://iptv-org.github.io/iptv/categories/kids.m3u', group: 'Kids' },
-      { name: 'Legislative', url: 'https://iptv-org.github.io/iptv/categories/legislative.m3u', group: 'Legislative' },
-      { name: 'Lifestyle', url: 'https://iptv-org.github.io/iptv/categories/lifestyle.m3u', group: 'Lifestyle' },
-      { name: 'Movies', url: 'https://iptv-org.github.io/iptv/categories/movies.m3u', group: 'Movies' },
-      { name: 'Music', url: 'https://iptv-org.github.io/iptv/categories/music.m3u', group: 'Music' },
-      { name: 'News', url: 'https://iptv-org.github.io/iptv/categories/news.m3u', group: 'News' },
-      { name: 'Outdoor', url: 'https://iptv-org.github.io/iptv/categories/outdoor.m3u', group: 'Outdoor' },
-      { name: 'Public', url: 'https://iptv-org.github.io/iptv/categories/public.m3u', group: 'Public' },
-      { name: 'Relax', url: 'https://iptv-org.github.io/iptv/categories/relax.m3u', group: 'Relax' },
-      { name: 'Religious', url: 'https://iptv-org.github.io/iptv/categories/religious.m3u', group: 'Religious' },
-      { name: 'Science', url: 'https://iptv-org.github.io/iptv/categories/science.m3u', group: 'Science' },
-      { name: 'Series', url: 'https://iptv-org.github.io/iptv/categories/series.m3u', group: 'Series' },
-      { name: 'Shop', url: 'https://iptv-org.github.io/iptv/categories/shop.m3u', group: 'Shop' },
-      { name: 'Show', url: 'https://iptv-org.github.io/iptv/categories/show.m3u', group: 'Show' },
+    // Fuentes limitadas para pruebas (descomenta más cuando funcione)
+    const allSources = [
+      // Países (solo 4 iniciales)
+      { name: 'México', url: 'https://iptv-org.github.io/iptv/countries/mx.m3u', group: 'México' },
+      { name: 'USA', url: 'https://iptv-org.github.io/iptv/countries/us.m3u', group: 'USA' },
+      { name: 'Argentina', url: 'https://iptv-org.github.io/iptv/countries/ar.m3u', group: 'Argentina' },
+      { name: 'Brasil', url: 'https://iptv-org.github.io/iptv/countries/br.m3u', group: 'Brasil' },
+      // Categorías clave + A1X
       { name: 'Sports', url: 'https://iptv-org.github.io/iptv/categories/sports.m3u', group: 'Sports' },
-      { name: 'Travel', url: 'https://iptv-org.github.io/iptv/categories/travel.m3u', group: 'Travel' },
-      { name: 'Weather', url: 'https://iptv-org.github.io/iptv/categories/weather.m3u', group: 'Weather' },
-      { name: 'TDT Channels', url: 'https://api.allorigins.win/raw?url=https://www.tdtchannels.com/lists/tv.json', group: 'TDT' },
-      { name: 'Makanada', url: 'https://gist.githubusercontent.com/killermina/f85b5faace03d9d0eedd80328ea40ab5/raw/87005309ce21412193fbd3b432bb1b29fdf37b87/makanada.json', group: 'Makanada' },
-      { name: 'A1X', url: 'https://raw.githubusercontent.com/a1xmedia/m3u/main/a1x.m3u', group: 'A1X' }
+      { name: 'Movies', url: 'https://iptv-org.github.io/iptv/categories/movies.m3u', group: 'Movies' },
+      { name: 'News', url: 'https://iptv-org.github.io/iptv/categories/news.m3u', group: 'News' },
+      { name: 'A1X', url: 'https://raw.githubusercontent.com/a1xmedia/m3u/main/a1x.m3u', group: 'A1X' },
+      // Descomenta para más (agrega una por una)
+      // { name: 'TDT Channels', url: 'https://api.allorigins.win/raw?url=https://www.tdtchannels.com/lists/tv.json', group: 'TDT' },
+      // { name: 'Makanada', url: 'https://gist.githubusercontent.com/killermina/f85b5faace03d9d0eedd80328ea40ab5/raw/87005309ce21412193fbd3b432bb1b29fdf37b87/makanada.json', group: 'Makanada' },
+      // ... resto de categorías/países
     ];
 
-    // Fuentes principales + categorías
-    const allSources = [...countrySources.map(s => ({ ...s, group: s.name })), ...categorySources];
-
-    // Fetch y parse de todas las fuentes
-    const allChannels = [];
-    for (const source of allSources) {
+    // Fetch paralelo con timeout (5s por fuente)
+    const fetchPromises = allSources.map(async (source) => {
       try {
-        const response = await fetch(source.url);
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
+        const response = await fetch(source.url, { signal: controller.signal });
+        clearTimeout(timeoutId);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
         let data;
         if (source.url.endsWith('.json')) {
           data = await response.json();
@@ -65,35 +33,35 @@ module.exports = async (req, res) => {
           const text = await response.text();
           data = parseM3U(text);
         }
-        // Ajustar canales con grupo
         const channels = Array.isArray(data) ? data : [];
-        channels.forEach(ch => {
-          ch.group = source.group || 'General';
-          if (!ch.url || ch.url === 'No disponible') return; // Filtrar inválidos
-          allChannels.push(ch);
-        });
+        return channels.slice(0, 100).map(ch => ({ ...ch, group: source.group })).filter(ch => ch.url && ch.url !== 'No disponible');
       } catch (err) {
-        console.error(`Error fetching ${source.name}:`, err);
+        console.error(`Error en ${source.name}:`, err.message);
+        return [];
       }
-    }
+    });
+
+    const allChannelArrays = await Promise.all(fetchPromises);
+    const allChannels = allChannelArrays.flat();
 
     // Generar M3U
     let m3uContent = '#EXTM3U\n';
     allChannels.forEach(ch => {
       const logoAttr = ch.logo ? ` tvg-logo="${ch.logo}"` : '';
-      m3uContent += `#EXTINF:-1${logoAttr},tvg-name="${ch.name}" group-title="${ch.group}",${ch.name}\n`;
+      m3uContent += `#EXTINF:-1 tvg-name="${ch.name}" group-title="${ch.group}"${logoAttr},${ch.name}\n`;
       m3uContent += `${ch.url}\n`;
     });
 
     res.setHeader('Content-Type', 'application/vnd.apple.mpegurl');
-    res.setHeader('Content-Disposition', 'attachment; filename=playlist.m3u');
+    res.setHeader('Cache-Control', 'public, max-age=300'); // Cache 5min
     res.status(200).send(m3uContent);
   } catch (error) {
-    res.status(500).send('#EXTM3U\n#EXTINF:-1,Error al generar playlist\nhttp://error.example.com');
+    console.error('Error general:', error);
+    res.status(500).send('#EXTM3U\n#EXTINF:-1 group-title="Error",Error al generar playlist\nhttp://example.com/error');
   }
 };
 
-// Función parseM3U (igual que en tu HTML)
+// Función parseM3U (igual que antes)
 function parseM3U(content) {
   const channels = [];
   const lines = content.split('\n');
