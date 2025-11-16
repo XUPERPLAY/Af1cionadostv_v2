@@ -13,10 +13,12 @@
       background: linear-gradient(to bottom, #121212, #1f1f1f);
       color: white;
       height: 100vh;
+      width: 100vw;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: stretch;
       overflow: hidden;
+      box-sizing: border-box;
     }
 
     header {
@@ -27,6 +29,9 @@
       justify-content: flex-start;
       align-items: center;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+      flex: 0 0 auto;
+      z-index: 100;
+      box-sizing: border-box;
     }
 
     header img {
@@ -34,6 +39,7 @@
       height: 50px;
       margin-right: 10px;
       border-radius: 50%;
+      flex-shrink: 0;
     }
 
     header h1 {
@@ -42,20 +48,27 @@
       font-weight: bold;
       display: flex;
       align-items: center;
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     #player {
       background: black;
-      width: 90%;
-      max-width: 800px;
-      margin: 10px;
-      border-radius: 10px;
+      width: 100%;
+      height: 35vh;
+      flex: 0 0 35vh;
+      border-radius: 0;
       box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: box-shadow 0.3s ease;
+      max-height: 400px;
+      z-index: 10;
+      overflow: hidden;
     }
 
     #player:hover {
@@ -64,8 +77,10 @@
 
     video, audio {
       width: 100%;
+      height: 100%;
       background: black;
-      border-radius: 10px;
+      object-fit: contain;
+      border-radius: 0;
     }
 
     #radioPlaceholder {
@@ -74,7 +89,7 @@
       height: 100%;
       background: black url('https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png') center no-repeat;
       background-size: contain;
-      border-radius: 10px;
+      border-radius: 0;
       position: absolute;
       top: 0;
       left: 0;
@@ -87,15 +102,21 @@
       padding: 10px;
       border-radius: 5px;
       margin: 10px;
-      width: 90%;
-      max-width: 800px;
+      width: calc(100% - 20px);
       transition: all 0.3s ease;
       box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+      flex: 0 0 auto;
+      z-index: 50;
+      box-sizing: border-box;
     }
 
     #searchInput:focus {
       outline: none;
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+
+    #searchInput::placeholder {
+      color: #aaa;
     }
 
     .tabs {
@@ -104,6 +125,9 @@
       width: 100%;
       margin: 5px 0;
       flex-wrap: wrap;
+      flex: 0 0 auto;
+      z-index: 50;
+      box-sizing: border-box;
     }
 
     .tab {
@@ -118,6 +142,10 @@
       flex: 1 1 auto;
       font-size: 14px;
       transition: background 0.3s ease, transform 0.2s ease;
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .tab:hover {
@@ -132,14 +160,17 @@
 
     .channelList {
       background: #1a1a1a;
-      width: 90%;
-      max-width: 800px;
+      width: 100%;
       padding: 10px;
       overflow-y: auto;
       flex: 1 1 auto;
-      max-height: calc(100vh - 300px);
-      border-radius: 10px;
+      border-radius: 0;
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+      display: flex;
+      flex-direction: column;
+      z-index: 5;
+      box-sizing: border-box;
+      -webkit-overflow-scrolling: touch; /* Smooth scroll en iOS */
     }
 
     .channel {
@@ -151,6 +182,8 @@
       cursor: pointer;
       background: #292929;
       transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      min-height: 50px;
+      box-sizing: border-box;
     }
 
     .channel img {
@@ -158,6 +191,15 @@
       height: 30px;
       margin-right: 10px;
       border-radius: 50%;
+      flex-shrink: 0;
+      object-fit: cover;
+    }
+
+    .channel span {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .channel:hover {
@@ -178,44 +220,21 @@
       left: 20px;
       font-size: 14px;
       color: white;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.7);
       padding: 8px 12px;
       border-radius: 8px;
-      z-index: 10;
+      z-index: 20;
       display: none;
       font-weight: bold;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
       transition: opacity 0.5s ease;
       opacity: 0;
+      pointer-events: none;
+      max-width: 80%;
     }
 
     #channelOverlay.show {
       opacity: 1;
-    }
-
-    .pagination {
-      display: flex;
-      justify-content: center;
-      margin-top: 10px;
-    }
-
-    .page-btn {
-      background: #292929;
-      color: white;
-      padding: 5px 10px;
-      margin: 0 5px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    .page-btn:hover {
-      background: #3a3a3a;
-    }
-
-    .page-btn.disabled {
-      background: #1a1a1a;
-      cursor: not-allowed;
     }
 
     .loading {
@@ -223,67 +242,301 @@
       padding: 20px;
       font-style: italic;
       color: #ccc;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    @media (max-width: 768px) {
-      #player,
-      #searchInput,
-      .channelList {
-        width: 95%;
+    /* Mejoras generales para touch devices */
+    .channel, .tab {
+      touch-action: manipulation;
+    }
+
+    /* Media queries ampliadas para más resoluciones y orientaciones */
+    /* Móviles pequeños portrait */
+    @media (max-width: 480px) and (orientation: portrait) {
+      header {
+        padding: 5px 10px;
       }
+
       header img {
-        width: 40px;
-        height: 40px;
+        width: 35px;
+        height: 35px;
       }
+
       header h1 {
-        font-size: 20px;
+        font-size: 18px;
       }
-      .tabs {
-        flex-direction: column;
-        align-items: center;
+
+      #player {
+        height: 25vh;
+        flex: 0 0 25vh;
       }
+
+      #searchInput {
+        padding: 6px;
+        margin: 5px;
+        font-size: 14px;
+      }
+
       .tab {
-        width: 90%;
-        margin: 3px 0;
+        font-size: 12px;
+        padding: 6px 10px;
+        min-width: 70px;
       }
+
+      .channel {
+        min-height: 40px;
+        padding: 5px;
+      }
+
+      .channel img {
+        width: 20px;
+        height: 20px;
+      }
+
       #channelOverlay {
         bottom: 10px;
         left: 10px;
         font-size: 12px;
         padding: 6px 10px;
-      }
-      .channelList {
-        max-height: calc(100vh - 250px);
+        max-width: 90%;
       }
     }
 
-    @media (max-width: 480px) {
-      header {
-        padding: 8px 16px;
-      }
-      header img {
-        width: 35px;
-        height: 35px;
-      }
-      header h1 {
-        font-size: 18px;
-      }
+    /* Móviles portrait >480px */
+    @media (min-width: 481px) and (max-width: 768px) and (orientation: portrait) {
       #player {
-        margin: 5px;
+        height: 30vh;
+        flex: 0 0 30vh;
       }
-      #searchInput {
-        padding: 8px;
-        margin: 5px;
+
+      .channel {
+        min-height: 45px;
+        padding: 6px;
       }
+
       .channel img {
         width: 25px;
         height: 25px;
       }
-      .channel {
-        padding: 6px;
+    }
+
+    /* Móviles landscape */
+    @media (max-height: 500px) and (orientation: landscape) {
+      #player {
+        height: 50vh;
+        flex: 0 0 50vh;
       }
+
       .channelList {
-        max-height: calc(100vh - 200px);
+        flex: 0 0 40vh;
+        overflow-y: auto;
+      }
+
+      header {
+        padding: 5px 10px;
+      }
+
+      #searchInput {
+        margin: 5px;
+        padding: 5px;
+      }
+
+      .tabs {
+        margin: 2px 0;
+      }
+
+      .tab {
+        padding: 5px 8px;
+        font-size: 12px;
+      }
+    }
+
+    /* Tablets portrait */
+    @media (min-width: 769px) and (max-width: 1024px) and (orientation: portrait) {
+      #player {
+        height: 40vh;
+        flex: 0 0 40vh;
+      }
+
+      .channel {
+        min-height: 60px;
+        padding: 12px;
+      }
+
+      .channel img {
+        width: 40px;
+        height: 40px;
+      }
+
+      header h1 {
+        font-size: 22px;
+      }
+    }
+
+    /* Tablets landscape */
+    @media (min-width: 769px) and (max-width: 1024px) and (orientation: landscape) {
+      #player {
+        height: 45vh;
+        flex: 0 0 45vh;
+      }
+
+      .channelList {
+        flex: 0 0 50vh;
+      }
+    }
+
+    /* Desktops y laptops */
+    @media (min-width: 1025px) and (max-width: 1440px) {
+      #player {
+        height: 35vh;
+        flex: 0 0 35vh;
+      }
+
+      #searchInput {
+        padding: 12px;
+        font-size: 16px;
+      }
+
+      .tab {
+        padding: 10px 16px;
+        font-size: 16px;
+      }
+
+      .channel {
+        min-height: 65px;
+        padding: 14px;
+      }
+
+      .channel img {
+        width: 45px;
+        height: 45px;
+      }
+    }
+
+    /* TVs y pantallas grandes */
+    @media (min-width: 1441px) {
+      body {
+        font-size: 18px;
+      }
+
+      header {
+        padding: 15px 30px;
+      }
+
+      header img {
+        width: 70px;
+        height: 70px;
+      }
+
+      header h1 {
+        font-size: 32px;
+      }
+
+      #player {
+        height: 35vh;
+        flex: 0 0 35vh;
+        max-width: 80%;
+        margin: 0 auto;
+      }
+
+      #searchInput {
+        padding: 15px;
+        font-size: 20px;
+        margin: 15px;
+        width: calc(100% - 30px);
+      }
+
+      .tabs {
+        padding: 10px 0;
+      }
+
+      .tab {
+        padding: 12px 20px;
+        font-size: 20px;
+        min-width: 120px;
+        margin: 5px;
+      }
+
+      .channelList {
+        padding: 20px;
+      }
+
+      .channel {
+        min-height: 70px;
+        padding: 15px;
+        font-size: 20px;
+        margin: 8px 0;
+      }
+
+      .channel img {
+        width: 50px;
+        height: 50px;
+        margin-right: 20px;
+      }
+
+      #channelOverlay {
+        font-size: 20px;
+        padding: 12px 16px;
+        bottom: 30px;
+        left: 30px;
+        max-width: 70%;
+      }
+
+      /* Para ultra anchas como 4K TVs */
+      @media (min-width: 2560px) {
+        .channelList {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+          gap: 15px;
+        }
+
+        .channel {
+          flex-direction: column;
+          text-align: center;
+          min-height: auto;
+          padding: 20px;
+        }
+
+        .channel img {
+          margin-right: 0;
+          margin-bottom: 10px;
+          width: 80px;
+          height: 80px;
+        }
+
+        .channel span {
+          white-space: normal;
+          text-align: center;
+        }
+      }
+    }
+
+    /* Orientación portrait en pantallas grandes (raro, pero para tablets/TVs) */
+    @media (orientation: portrait) and (min-height: 800px) {
+      #player {
+        height: 30vh;
+        flex: 0 0 30vh;
+      }
+
+      .channelList {
+        flex: 1;
+      }
+    }
+
+    /* Soporte para alto contraste y accesibilidad */
+    @media (prefers-contrast: high) {
+      .channel:hover {
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        transition: none !important;
+        animation: none !important;
       }
     }
   </style>
@@ -291,13 +544,13 @@
 <body>
 
 <header>
-  <img src="https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png " alt="Logo">
+  <img src="https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png" alt="Logo">
   <h1>AF1CIONADOS TV</h1>
 </header>
 
 <div id="player">
-  <video id="video" controls autoplay preload="none" style="display: block;"></video>
-  <audio id="audio" controls autoplay preload="none" style="display: none;"></audio>
+  <video id="video" controls autoplay preload="none"></video>
+  <audio id="audio" controls autoplay preload="none"></audio>
   <div id="radioPlaceholder"></div>
   <div id="channelOverlay"></div>
 </div>
@@ -315,10 +568,6 @@
   <!-- Canales se cargarán aquí -->
 </div>
 
-<div class="pagination" id="pagination">
-  <!-- Botones de paginación se cargarán aquí -->
-</div>
-
 <script>
   const video = document.getElementById('video');
   const audio = document.getElementById('audio');
@@ -326,13 +575,10 @@
   const searchInput = document.getElementById('searchInput');
   const tabs = document.querySelectorAll('.tab');
   const channelList = document.getElementById('channelList');
-  const pagination = document.getElementById('pagination');
   let allChannels = [];
   let currentHls = null;
   let currentDash = null;
   let currentMode = 'tv';
-  let currentPage = 1;
-  const channelsPerPage = 20; // Número de canales por página para optimizar carga
 
   // Cargar canales por defecto
   loadAllChannels();
@@ -342,7 +588,6 @@
     const filtered = allChannels.filter(c =>
       c.name.toLowerCase().includes(this.value.toLowerCase())
     );
-    currentPage = 1;
     displayChannels(filtered, currentMode === 'radio');
   });
 
@@ -372,48 +617,48 @@
   function loadChannelsByType(type) {
     const channelsByType = {
       country: [
-        { name: 'Andorra', url: 'https://iptv-org.github.io/iptv/countries/ad.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'United Arab Emirates', url: 'https://iptv-org.github.io/iptv/countries/ae.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'México', url: 'https://iptv-org.github.io/iptv/countries/mx.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'USA', url: 'https://iptv-org.github.io/iptv/countries/us.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'Argentina', url: 'https://iptv-org.github.io/iptv/countries/ar.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'Reino Unido', url: 'https://iptv-org.github.io/iptv/countries/gb.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'Francia', url: 'https://iptv-org.github.io/iptv/countries/fr.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'Brasil', url: 'https://iptv-org.github.io/iptv/countries/br.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' }
+        { name: 'Andorra', url: 'https://iptv-org.github.io/iptv/countries/ad.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'United Arab Emirates', url: 'https://iptv-org.github.io/iptv/countries/ae.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'México', url: 'https://iptv-org.github.io/iptv/countries/mx.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'USA', url: 'https://iptv-org.github.io/iptv/countries/us.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Argentina', url: 'https://iptv-org.github.io/iptv/countries/ar.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Reino Unido', url: 'https://iptv-org.github.io/iptv/countries/gb.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Francia', url: 'https://iptv-org.github.io/iptv/countries/fr.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Brasil', url: 'https://iptv-org.github.io/iptv/countries/br.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' }
       ],
       category: [
-        { name: 'Animation', url: 'https://iptv-org.github.io/iptv/categories/animation.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'Auto', url: 'https://iptv-org.github.io/iptv/categories/auto.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'Business', url: 'https://iptv-org.github.io/iptv/categories/business.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'Classic', url: 'https://iptv-org.github.io/iptv/categories/classic.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'Comedy', url: 'https://iptv-org.github.io/iptv/categories/comedy.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'Cooking', url: 'https://iptv-org.github.io/iptv/categories/cooking.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'Culture', url: 'https://iptv-org.github.io/iptv/categories/culture.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'Documentary', url: 'https://iptv-org.github.io/iptv/categories/documentary.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'Education', url: 'https://iptv-org.github.io/iptv/categories/education.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'Entertainment', url: 'https://iptv-org.github.io/iptv/categories/entertainment.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'Family', url: 'https://iptv-org.github.io/iptv/categories/family.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'General', url: 'https://iptv-org.github.io/iptv/categories/general.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'Kids', url: 'https://iptv-org.github.io/iptv/categories/kids.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'Legislative', url: 'https://iptv-org.github.io/iptv/categories/legislative.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'Lifestyle', url: 'https://iptv-org.github.io/iptv/categories/lifestyle.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'Movies', url: 'https://iptv-org.github.io/iptv/categories/movies.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'Music', url: 'https://iptv-org.github.io/iptv/categories/music.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'News', url: 'https://iptv-org.github.io/iptv/categories/news.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'Outdoor', url: 'https://iptv-org.github.io/iptv/categories/outdoor.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'Public', url: 'https://iptv-org.github.io/iptv/categories/public.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'Relax', url: 'https://iptv-org.github.io/iptv/categories/relax.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'Religious', url: 'https://iptv-org.github.io/iptv/categories/religious.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'Science', url: 'https://iptv-org.github.io/iptv/categories/science.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'Series', url: 'https://iptv-org.github.io/iptv/categories/series.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'Shop', url: 'https://iptv-org.github.io/iptv/categories/shop.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'Show', url: 'https://iptv-org.github.io/iptv/categories/show.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'Sports', url: 'https://iptv-org.github.io/iptv/categories/sports.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'Travel', url: 'https://iptv-org.github.io/iptv/categories/travel.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'Weather', url: 'https://iptv-org.github.io/iptv/categories/weather.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'TDT Channels', url: 'https://api.allorigins.win/raw?url=https://www.tdtchannels.com/lists/tv.json', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'Makanada', url: 'https://gist.githubusercontent.com/killermina/f85b5faace03d9d0eedd80328ea40ab5/raw/87005309ce21412193fbd3b432bb1b29fdf37b87/makanada.json', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' },
-        { name: 'A1X', url: 'https://raw.githubusercontent.com/a1xmedia/m3u/main/a1x.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ' }
+        { name: 'Animation', url: 'https://iptv-org.github.io/iptv/categories/animation.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Auto', url: 'https://iptv-org.github.io/iptv/categories/auto.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Business', url: 'https://iptv-org.github.io/iptv/categories/business.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Classic', url: 'https://iptv-org.github.io/iptv/categories/classic.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Comedy', url: 'https://iptv-org.github.io/iptv/categories/comedy.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Cooking', url: 'https://iptv-org.github.io/iptv/categories/cooking.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Culture', url: 'https://iptv-org.github.io/iptv/categories/culture.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Documentary', url: 'https://iptv-org.github.io/iptv/categories/documentary.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Education', url: 'https://iptv-org.github.io/iptv/categories/education.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Entertainment', url: 'https://iptv-org.github.io/iptv/categories/entertainment.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Family', url: 'https://iptv-org.github.io/iptv/categories/family.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'General', url: 'https://iptv-org.github.io/iptv/categories/general.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Kids', url: 'https://iptv-org.github.io/iptv/categories/kids.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Legislative', url: 'https://iptv-org.github.io/iptv/categories/legislative.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Lifestyle', url: 'https://iptv-org.github.io/iptv/categories/lifestyle.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Movies', url: 'https://iptv-org.github.io/iptv/categories/movies.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Music', url: 'https://iptv-org.github.io/iptv/categories/music.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'News', url: 'https://iptv-org.github.io/iptv/categories/news.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Outdoor', url: 'https://iptv-org.github.io/iptv/categories/outdoor.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Public', url: 'https://iptv-org.github.io/iptv/categories/public.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Relax', url: 'https://iptv-org.github.io/iptv/categories/relax.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Religious', url: 'https://iptv-org.github.io/iptv/categories/religious.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Science', url: 'https://iptv-org.github.io/iptv/categories/science.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Series', url: 'https://iptv-org.github.io/iptv/categories/series.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Shop', url: 'https://iptv-org.github.io/iptv/categories/shop.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Show', url: 'https://iptv-org.github.io/iptv/categories/show.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Sports', url: 'https://iptv-org.github.io/iptv/categories/sports.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Travel', url: 'https://iptv-org.github.io/iptv/categories/travel.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Weather', url: 'https://iptv-org.github.io/iptv/categories/weather.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'TDT Channels', url: 'https://api.allorigins.win/raw?url=https://www.tdtchannels.com/lists/tv.json', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Makanada', url: 'https://gist.githubusercontent.com/killermina/f85b5faace03d9d0eedd80328ea40ab5/raw/87005309ce21412193fbd3b432bb1b29fdf37b87/makanada.json', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'A1X', url: 'https://raw.githubusercontent.com/a1xmedia/m3u/main/a1x.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' }
       ]
     };
 
@@ -435,9 +680,11 @@
     channelList.innerHTML = '<div class="loading">Cargando...</div>';
     fetch(url)
       .then(response => {
-        if (url.endsWith('.json')) {
+        const contentType = response.headers.get('content-type') || '';
+        if (contentType.includes('application/json') || url.endsWith('.json')) {
           return response.json();
         } else {
+          // Para m3u, w3u, php, etc., tratar como texto M3U
           return response.text().then(text => parseM3U(text));
         }
       })
@@ -456,14 +703,13 @@
         allChannels = data.map(channel => ({
           name: channel.name,
           url: channel.options ? channel.options[0].url : channel.iptv_urls ? channel.iptv_urls[0] : channel.url || 'No disponible',
-          logo: channel.logo || 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png '
-        }));
-        currentPage = 1;
+          logo: channel.logo || 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png'
+        })).filter(channel => channel.url !== 'No disponible'); // Filtrar canales inválidos
         displayChannels(allChannels, false);
       })
       .catch(error => {
         console.error('Error loading list from', url, error);
-        channelList.innerHTML = '<div>Error al cargar los canales</div>';
+        channelList.innerHTML = '<div class="loading">Error al cargar los canales</div>';
       });
   }
 
@@ -506,7 +752,7 @@
     } else {
       channel.name = 'Unknown';
     }
-    if (!channel.logo) channel.logo = 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png ';
+    if (!channel.logo) channel.logo = 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png';
     return channel;
   }
 
@@ -530,7 +776,7 @@
       })
       .catch(error => {
         console.error('Error loading radio countries:', error);
-        channelList.innerHTML = '<div>Error al cargar los países de radio</div>';
+        channelList.innerHTML = '<div class="loading">Error al cargar los países de radio</div>';
       });
   }
 
@@ -541,14 +787,13 @@
         allChannels = data.map(station => ({
           name: station.name,
           url: station.url_resolved,
-          logo: station.favicon || 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png '
-        }));
-        currentPage = 1;
+          logo: station.favicon || 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png'
+        })).filter(station => station.url); // Filtrar radios sin URL
         displayChannels(allChannels, true);
       })
       .catch(error => {
         console.error('Error loading radio stations:', error);
-        channelList.innerHTML = '<div>Error al cargar las radios</div>';
+        channelList.innerHTML = '<div class="loading">Error al cargar las radios</div>';
       });
   }
 
@@ -556,13 +801,10 @@
     channelList.innerHTML = '';
     if (channels.length === 0) {
       channelList.innerHTML = '<div class="loading">No se encontraron canales</div>';
-      pagination.innerHTML = '';
       return;
     }
-    const start = (currentPage - 1) * channelsPerPage;
-    const end = start + channelsPerPage;
-    const paginatedChannels = channels.slice(start, end);
-    paginatedChannels.forEach(channel => {
+    // Mostrar todos los canales sin paginación, con scroll
+    channels.forEach(channel => {
       const div = document.createElement('div');
       div.className = 'channel';
       div.innerHTML = `
@@ -576,33 +818,6 @@
       };
       channelList.appendChild(div);
     });
-    renderPagination(channels.length, isRadio);
-  }
-
-  function renderPagination(totalChannels, isRadio) {
-    pagination.innerHTML = '';
-    const totalPages = Math.ceil(totalChannels / channelsPerPage);
-    const prevBtn = document.createElement('button');
-    prevBtn.className = 'page-btn' + (currentPage === 1 ? ' disabled' : '');
-    prevBtn.textContent = 'Anterior';
-    prevBtn.onclick = () => {
-      if (currentPage > 1) {
-        currentPage--;
-        displayChannels(allChannels, isRadio);
-      }
-    };
-    pagination.appendChild(prevBtn);
-
-    const nextBtn = document.createElement('button');
-    nextBtn.className = 'page-btn' + (currentPage === totalPages ? ' disabled' : '');
-    nextBtn.textContent = 'Siguiente';
-    nextBtn.onclick = () => {
-      if (currentPage < totalPages) {
-        currentPage++;
-        displayChannels(allChannels, isRadio);
-      }
-    };
-    pagination.appendChild(nextBtn);
   }
 
   function playChannel(url, name, isRadio = false) {
@@ -653,14 +868,14 @@
       player.src = url;
       player.addEventListener('loadedmetadata', () => {
         player.play().catch(error => console.error('Play error:', error));
-      });
+      }, { once: true });
     } else {
       player.src = url;
       player.addEventListener('loadedmetadata', () => {
         player.play().catch(error => console.error('Play error:', error));
-      });
+      }, { once: true });
     }
-    const overlayText = isRadio ? 'Escuchando: ' : 'Estas Viendo: ';
+    const overlayText = isRadio ? 'Escuchando: ' : 'Estás Viendo: ';
     const overlay = document.getElementById('channelOverlay');
     overlay.innerHTML = overlayText + name;
     overlay.style.display = 'block';
@@ -672,6 +887,22 @@
       }, 500);
     }, 10000);
   }
+
+  // Manejo de resize para adaptaciones dinámicas
+  window.addEventListener('resize', () => {
+    // Recalcular alturas si es necesario, pero con flex ya se adapta
+  });
+
+  // Soporte para teclas (accesibilidad)
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && document.activeElement === searchInput) {
+      // Buscar al presionar enter
+      const filtered = allChannels.filter(c =>
+        c.name.toLowerCase().includes(searchInput.value.toLowerCase())
+      );
+      displayChannels(filtered, currentMode === 'radio');
+    }
+  });
 </script>
 
 </body>
