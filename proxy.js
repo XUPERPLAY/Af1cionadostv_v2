@@ -15,8 +15,8 @@ module.exports = async (req, res) => {
     const response = await fetch(targetUrl, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-        'Referer': 'https://af1cionadostv-v2.vercel.app/',
-        'Origin': 'https://af1cionadostv-v2.vercel.app'
+        'Referer': 'https://' + req.headers.host + '/',
+        'Origin': 'https://' + req.headers.host
       }
     });
 
@@ -27,7 +27,6 @@ module.exports = async (req, res) => {
 
     if (contentType.includes('application/vnd.apple.mpegurl') || targetUrl.endsWith('.m3u8')) {
       let body = await response.text();
-      // Reescribir URLs relativas y absolutas en .m3u8
       const baseUrl = targetUrl.substring(0, targetUrl.lastIndexOf('/'));
       body = body.replace(/(https?:\/\/[^#\s]+)|([^#\s"]+\.ts[^#\s"]*)/g, (match, p1, p2) => {
         if (p1) return `/api/proxy?url=${encodeURIComponent(p1)}`;
