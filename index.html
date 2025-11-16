@@ -132,7 +132,7 @@
       padding: 10px;
       overflow-y: auto;
       flex: 1 1 auto;
-      max-height: calc(100vh - 320px);
+      max-height: calc(100vh - 320px); /* Ajustado para footer */
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
     }
@@ -200,7 +200,7 @@
       text-align: center;
       padding: 8px 0;
       font-size: 12px;
-      color: #e30e0e;
+      color: #aaa;
       background: #1f1f1f;
       box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
       z-index: 10;
@@ -234,12 +234,12 @@
 
 <header>
   <img src="https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png" alt="Logo">
-  <h1>AF1CIONADOS TV & RADIO </h1>
+  <h1>AF1CIONADOS TV</h1>
 </header>
 
 <div id="player">
-  <video id="video" controls autoplay preload="metadata" playsinline style="display: block;"></video>
-  <audio id="audio" controls autoplay preload="metadata" playsinline style="display: none;"></audio>
+  <video id="video" controls autoplay preload="auto" playsinline style="display: block;"></video>
+  <audio id="audio" controls autoplay preload="auto" playsinline style="display: none;"></audio>
   <div id="radioPlaceholder"></div>
   <div id="channelOverlay"></div>
 </div>
@@ -269,8 +269,7 @@
   let currentDash = null;
   let currentMode = 'tv';
   let currentPage = 1;
-  const channelsPerPage = 30;
-  const proxy = 'https://api.allorigins.win/raw?url='; // PROXY FIABLE
+  const channelsPerPage = 30; // Más por página para menos scroll
 
   loadAllChannels();
 
@@ -294,23 +293,23 @@
   });
 
   function loadAllChannels() {
-    loadRemoteList(proxy + 'https://iptv-org.github.io/iptv/index.m3u');
+    loadRemoteList('https://iptv-org.github.io/iptv/index.m3u');
   }
 
   function loadChannelsByType(type) {
     const channelsByType = {
       country: [
-        { name: 'México', url: proxy + 'https://iptv-org.github.io/iptv/countries/mx.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'USA', url: proxy + 'https://iptv-org.github.io/iptv/countries/us.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Argentina', url: proxy + 'https://iptv-org.github.io/iptv/countries/ar.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'España', url: proxy + 'https://iptv-org.github.io/iptv/countries/es.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' }
+        { name: 'México', url: 'https://iptv-org.github.io/iptv/countries/mx.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'USA', url: 'https://iptv-org.github.io/iptv/countries/us.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Argentina', url: 'https://iptv-org.github.io/iptv/countries/ar.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'España', url: 'https://iptv-org.github.io/iptv/countries/es.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' }
       ],
       category: [
-        { name: 'Sports', url: proxy + 'https://iptv-org.github.io/iptv/categories/sports.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Movies', url: proxy + 'https://iptv-org.github.io/iptv/categories/movies.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Makanada', url: proxy + 'https://gist.githubusercontent.com/killermina/f85b5faace03d9d0eedd80328ea40ab5/raw/87005309ce21412193fbd3b432bb1b29fdf37b87/makanada.json', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'A1X', url: proxy + 'https://raw.githubusercontent.com/a1xmedia/m3u/main/a1x.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Ejemplo PHP', url: proxy + 'https://example.com/list.php', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' }
+        { name: 'Sports', url: 'https://iptv-org.github.io/iptv/categories/sports.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Movies', url: 'https://iptv-org.github.io/iptv/categories/movies.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Makanada', url: 'https://gist.githubusercontent.com/killermina/f85b5faace03d9d0eedd80328ea40ab5/raw/87005309ce21412193fbd3b432bb1b29fdf37b87/makanada.json', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'A1X', url: 'https://raw.githubusercontent.com/a1xmedia/m3u/main/a1x.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'Ejemplo PHP', url: 'https://example.com/list.php', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' } // Puedes cambiar por tu .php
       ]
     };
 
@@ -327,15 +326,16 @@
 
   function loadRemoteList(url) {
     channelList.innerHTML = '<div class="loading">Cargando canales...</div>';
+    const isJson = url.endsWith('.json') || url.includes('.json');
+    const isM3u = url.endsWith('.m3u') || url.endsWith('.m3u8') || url.includes('.m3u');
+    const isPhp = url.endsWith('.php');
+
     fetch(url)
-      .then(r => r.text())
-      .then(text => {
-        let data;
-        try {
-          data = JSON.parse(text);
-        } catch {
-          data = parseM3U(text);
-        }
+      .then(r => {
+        if (isJson || isPhp) return r.json();
+        return r.text().then(text => parseM3U(text));
+      })
+      .then(data => {
         if (!Array.isArray(data)) {
           let list = [];
           if (data.channels) list = data.channels;
@@ -382,7 +382,7 @@
   }
 
   function loadRadioCountries() {
-    fetch(proxy + 'https://de1.api.radio-browser.info/json/countries')
+    fetch('https://de1.api.radio-browser.info/json/countries')
       .then(r => r.json())
       .then(data => {
         data.sort((a, b) => b.stationcount - a.stationcount);
@@ -399,7 +399,7 @@
   }
 
   function loadRadioStations(country) {
-    fetch(proxy + `https://de1.api.radio-browser.info/json/stations/bycountryexact/${encodeURIComponent(country)}`)
+    fetch(`https://de1.api.radio-browser.info/json/stations/bycountryexact/${encodeURIComponent(country)}`)
       .then(r => r.json())
       .then(data => {
         allChannels = data.map(s => ({
@@ -449,33 +449,27 @@
     if (isRadio) { video.pause(); video.src = ''; }
     else { audio.pause(); audio.src = ''; }
 
-    // Forzar proxy en streams para evitar CORS
-    const streamUrl = isHls || isDash ? proxy + encodeURIComponent(url) : url;
-
     if (isDash && window.dashjs) {
       currentDash = dashjs.MediaPlayer().create();
-      currentDash.initialize(player, streamUrl, true);
+      currentDash.initialize(player, url, true);
     } else if (isHls && Hls.isSupported()) {
       currentHls = new Hls({
         xhrSetup: (xhr) => { xhr.withCredentials = false; },
         lowLatencyMode: true,
         backBufferLength: 0,
-        maxBufferLength: 5,
-        liveSyncDurationCount: 2,
-        startLevel: 0,
-        maxMaxBufferLength: 10
+        maxBufferLength: 10,
+        liveSyncDurationCount: 3,
+        startLevel: -1
       });
-      currentHls.loadSource(streamUrl);
+      currentHls.loadSource(url);
       currentHls.attachMedia(player);
-      currentHls.on(Hls.Events.MANIFEST_PARSED, () => {
-        player.play().catch(() => {});
-      });
+      currentHls.on(Hls.Events.MANIFEST_PARSED, () => player.play());
     } else if (isHls && player.canPlayType('application/vnd.apple.mpegurl')) {
-      player.src = streamUrl;
-      player.play().catch(() => {});
+      player.src = url;
+      player.play();
     } else {
-      player.src = streamUrl;
-      player.play().catch(() => {});
+      player.src = url;
+      player.play();
     }
 
     const overlay = document.getElementById('channelOverlay');
@@ -485,7 +479,7 @@
     setTimeout(() => {
       overlay.classList.remove('show');
       setTimeout(() => overlay.style.display = 'none', 500);
-    }, 5000);
+    }, 8000);
   }
 
   // Scroll infinito
