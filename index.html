@@ -75,6 +75,18 @@
       box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
     }
 
+    #player.error {
+      background: #ff4444;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      text-align: center;
+      flex-direction: column;
+      padding: 20px;
+    }
+
     video, audio {
       width: 100%;
       height: 100%;
@@ -84,7 +96,6 @@
     }
 
     #radioPlaceholder {
-      display: none;
       width: 100%;
       height: 100%;
       background: black url('https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png') center no-repeat;
@@ -93,6 +104,20 @@
       position: absolute;
       top: 0;
       left: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #ccc;
+      font-size: 18px;
+      text-align: center;
+      z-index: 5;
+    }
+
+    #radioPlaceholder::before {
+      content: "Selecciona un canal para reproducir";
+      margin-top: 20px;
+      font-style: italic;
     }
 
     #searchInput {
@@ -171,7 +196,7 @@
       flex-direction: column;
       z-index: 5;
       box-sizing: border-box;
-      -webkit-overflow-scrolling: touch; /* Smooth scroll en iOS */
+      -webkit-overflow-scrolling: touch;
     }
 
     .channel {
@@ -253,291 +278,94 @@
       justify-content: center;
     }
 
+    /* Ocultar controles nativos en reproductores hasta que se reproduzca */
+    video:not([controls]) {
+      pointer-events: none;
+    }
+
     /* Mejoras generales para touch devices */
     .channel, .tab {
       touch-action: manipulation;
     }
 
     /* Media queries ampliadas para más resoluciones y orientaciones */
-    /* Móviles pequeños portrait */
     @media (max-width: 480px) and (orientation: portrait) {
-      header {
-        padding: 5px 10px;
-      }
-
-      header img {
-        width: 35px;
-        height: 35px;
-      }
-
-      header h1 {
-        font-size: 18px;
-      }
-
-      #player {
-        height: 25vh;
-        flex: 0 0 25vh;
-      }
-
-      #searchInput {
-        padding: 6px;
-        margin: 5px;
-        font-size: 14px;
-      }
-
-      .tab {
-        font-size: 12px;
-        padding: 6px 10px;
-        min-width: 70px;
-      }
-
-      .channel {
-        min-height: 40px;
-        padding: 5px;
-      }
-
-      .channel img {
-        width: 20px;
-        height: 20px;
-      }
-
-      .channelList {
-        padding-bottom: 90px;
-      }
-
-      .channel:last-child {
-        margin-bottom: 30px;
-      }
-
-      #channelOverlay {
-        bottom: 10px;
-        left: 10px;
-        font-size: 12px;
-        padding: 6px 10px;
-        max-width: 90%;
-      }
+      header { padding: 5px 10px; }
+      header img { width: 35px; height: 35px; }
+      header h1 { font-size: 18px; }
+      #player { height: 25vh; flex: 0 0 25vh; }
+      #searchInput { padding: 6px; margin: 5px; font-size: 14px; }
+      .tab { font-size: 12px; padding: 6px 10px; min-width: 70px; }
+      .channel { min-height: 40px; padding: 5px; }
+      .channel img { width: 20px; height: 20px; }
+      .channelList { padding-bottom: 90px; }
+      .channel:last-child { margin-bottom: 30px; }
+      #channelOverlay { bottom: 10px; left: 10px; font-size: 12px; padding: 6px 10px; max-width: 90%; }
+      #radioPlaceholder { font-size: 14px; }
+      #radioPlaceholder::before { margin-top: 10px; font-size: 12px; }
     }
 
-    /* Móviles portrait >480px */
     @media (min-width: 481px) and (max-width: 768px) and (orientation: portrait) {
-      #player {
-        height: 30vh;
-        flex: 0 0 30vh;
-      }
-
-      .channel {
-        min-height: 45px;
-        padding: 6px;
-      }
-
-      .channel img {
-        width: 25px;
-        height: 25px;
-      }
-
-      .channelList {
-        padding-bottom: 100px;
-      }
-
-      .channel:last-child {
-        margin-bottom: 35px;
-      }
+      #player { height: 30vh; flex: 0 0 30vh; }
+      .channel { min-height: 45px; padding: 6px; }
+      .channel img { width: 25px; height: 25px; }
+      .channelList { padding-bottom: 100px; }
+      .channel:last-child { margin-bottom: 35px; }
     }
 
-    /* Móviles landscape */
     @media (max-height: 500px) and (orientation: landscape) {
-      #player {
-        height: 50vh;
-        flex: 0 0 50vh;
-      }
-
-      .channelList {
-        flex: 0 0 40vh;
-        overflow-y: auto;
-        padding-bottom: 70px;
-      }
-
-      header {
-        padding: 5px 10px;
-      }
-
-      #searchInput {
-        margin: 5px;
-        padding: 5px;
-      }
-
-      .tabs {
-        margin: 2px 0;
-      }
-
-      .tab {
-        padding: 5px 8px;
-        font-size: 12px;
-      }
-
-      .channel:last-child {
-        margin-bottom: 20px;
-      }
+      #player { height: 50vh; flex: 0 0 50vh; }
+      .channelList { flex: 0 0 40vh; padding-bottom: 70px; }
+      header { padding: 5px 10px; }
+      #searchInput { margin: 5px; padding: 5px; }
+      .tabs { margin: 2px 0; }
+      .tab { padding: 5px 8px; font-size: 12px; }
+      .channel:last-child { margin-bottom: 20px; }
+      #radioPlaceholder { font-size: 16px; }
     }
 
-    /* Tablets portrait */
     @media (min-width: 769px) and (max-width: 1024px) and (orientation: portrait) {
-      #player {
-        height: 40vh;
-        flex: 0 0 40vh;
-      }
-
-      .channel {
-        min-height: 60px;
-        padding: 12px;
-      }
-
-      .channel img {
-        width: 40px;
-        height: 40px;
-      }
-
-      header h1 {
-        font-size: 22px;
-      }
-
-      .channelList {
-        padding-bottom: 110px;
-      }
-
-      .channel:last-child {
-        margin-bottom: 40px;
-      }
+      #player { height: 40vh; flex: 0 0 40vh; }
+      .channel { min-height: 60px; padding: 12px; }
+      .channel img { width: 40px; height: 40px; }
+      header h1 { font-size: 22px; }
+      .channelList { padding-bottom: 110px; }
+      .channel:last-child { margin-bottom: 40px; }
     }
 
-    /* Tablets landscape */
     @media (min-width: 769px) and (max-width: 1024px) and (orientation: landscape) {
-      #player {
-        height: 45vh;
-        flex: 0 0 45vh;
-      }
-
-      .channelList {
-        flex: 0 0 50vh;
-        padding-bottom: 80px;
-      }
-
-      .channel:last-child {
-        margin-bottom: 30px;
-      }
+      #player { height: 45vh; flex: 0 0 45vh; }
+      .channelList { flex: 0 0 50vh; padding-bottom: 80px; }
+      .channel:last-child { margin-bottom: 30px; }
     }
 
-    /* Desktops y laptops */
     @media (min-width: 1025px) and (max-width: 1440px) {
-      #player {
-        height: 35vh;
-        flex: 0 0 35vh;
-      }
-
-      #searchInput {
-        padding: 12px;
-        font-size: 16px;
-      }
-
-      .tab {
-        padding: 10px 16px;
-        font-size: 16px;
-      }
-
-      .channel {
-        min-height: 65px;
-        padding: 14px;
-      }
-
-      .channel img {
-        width: 45px;
-        height: 45px;
-      }
-
-      .channelList {
-        padding-bottom: 130px;
-      }
-
-      .channel:last-child {
-        margin-bottom: 50px;
-      }
+      #player { height: 35vh; flex: 0 0 35vh; }
+      #searchInput { padding: 12px; font-size: 16px; }
+      .tab { padding: 10px 16px; font-size: 16px; }
+      .channel { min-height: 65px; padding: 14px; }
+      .channel img { width: 45px; height: 45px; }
+      .channelList { padding-bottom: 130px; }
+      .channel:last-child { margin-bottom: 50px; }
     }
 
-    /* TVs y pantallas grandes */
     @media (min-width: 1441px) {
-      body {
-        font-size: 18px;
-      }
+      body { font-size: 18px; }
+      header { padding: 15px 30px; }
+      header img { width: 70px; height: 70px; }
+      header h1 { font-size: 32px; }
+      #player { height: 35vh; flex: 0 0 35vh; max-width: 80%; margin: 0 auto; }
+      #searchInput { padding: 15px; font-size: 20px; margin: 15px; width: calc(100% - 30px); }
+      .tabs { padding: 10px 0; }
+      .tab { padding: 12px 20px; font-size: 20px; min-width: 120px; margin: 5px; }
+      .channelList { padding: 20px; padding-bottom: 160px; }
+      .channel { min-height: 70px; padding: 15px; font-size: 20px; margin: 8px 0; }
+      .channel img { width: 50px; height: 50px; margin-right: 20px; }
+      .channel:last-child { margin-bottom: 60px; }
+      #channelOverlay { font-size: 20px; padding: 12px 16px; bottom: 30px; left: 30px; max-width: 70%; }
+      #radioPlaceholder { font-size: 24px; }
+      #radioPlaceholder::before { margin-top: 30px; font-size: 20px; }
 
-      header {
-        padding: 15px 30px;
-      }
-
-      header img {
-        width: 70px;
-        height: 70px;
-      }
-
-      header h1 {
-        font-size: 32px;
-      }
-
-      #player {
-        height: 35vh;
-        flex: 0 0 35vh;
-        max-width: 80%;
-        margin: 0 auto;
-      }
-
-      #searchInput {
-        padding: 15px;
-        font-size: 20px;
-        margin: 15px;
-        width: calc(100% - 30px);
-      }
-
-      .tabs {
-        padding: 10px 0;
-      }
-
-      .tab {
-        padding: 12px 20px;
-        font-size: 20px;
-        min-width: 120px;
-        margin: 5px;
-      }
-
-      .channelList {
-        padding: 20px;
-        padding-bottom: 160px;
-      }
-
-      .channel {
-        min-height: 70px;
-        padding: 15px;
-        font-size: 20px;
-        margin: 8px 0;
-      }
-
-      .channel img {
-        width: 50px;
-        height: 50px;
-        margin-right: 20px;
-      }
-
-      .channel:last-child {
-        margin-bottom: 60px;
-      }
-
-      #channelOverlay {
-        font-size: 20px;
-        padding: 12px 16px;
-        bottom: 30px;
-        left: 30px;
-        max-width: 70%;
-      }
-
-      /* Para ultra anchas como 4K TVs */
       @media (min-width: 2560px) {
         .channelList {
           display: grid;
@@ -545,61 +373,38 @@
           gap: 15px;
           padding-bottom: 60px;
         }
-
         .channel {
           flex-direction: column;
           text-align: center;
           min-height: auto;
           padding: 20px;
         }
-
         .channel img {
           margin-right: 0;
           margin-bottom: 10px;
           width: 80px;
           height: 80px;
         }
-
         .channel span {
           white-space: normal;
           text-align: center;
         }
-
-        .channel:last-child {
-          margin-bottom: 0;
-        }
+        .channel:last-child { margin-bottom: 0; }
       }
     }
 
-    /* Orientación portrait en pantallas grandes (raro, pero para tablets/TVs) */
     @media (orientation: portrait) and (min-height: 800px) {
-      #player {
-        height: 30vh;
-        flex: 0 0 30vh;
-      }
-
-      .channelList {
-        flex: 1;
-        padding-bottom: 120px;
-      }
-
-      .channel:last-child {
-        margin-bottom: 40px;
-      }
+      #player { height: 30vh; flex: 0 0 30vh; }
+      .channelList { flex: 1; padding-bottom: 120px; }
+      .channel:last-child { margin-bottom: 40px; }
     }
 
-    /* Soporte para alto contraste y accesibilidad */
     @media (prefers-contrast: high) {
-      .channel:hover {
-        box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
-      }
+      .channel:hover { box-shadow: 0 0 20px rgba(255, 255, 255, 0.8); }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      * {
-        transition: none !important;
-        animation: none !important;
-      }
+      * { transition: none !important; animation: none !important; }
     }
   </style>
 </head>
@@ -611,9 +416,9 @@
 </header>
 
 <div id="player">
-  <video id="video" preload="none"></video>
-  <audio id="audio" preload="none"></audio>
-  <div id="radioPlaceholder"></div>
+  <video id="video" preload="none" style="display: none;"></video>
+  <audio id="audio" preload="none" style="display: none;"></audio>
+  <div id="radioPlaceholder">Cargando...</div>
   <div id="channelOverlay"></div>
 </div>
 
@@ -637,22 +442,28 @@
   const searchInput = document.getElementById('searchInput');
   const tabs = document.querySelectorAll('.tab');
   const channelList = document.getElementById('channelList');
+  const player = document.getElementById('player');
   let allChannels = [];
   let currentHls = null;
   let currentDash = null;
   let currentMode = 'tv';
 
-  // Inicialización para ocultar reproductores y mostrar placeholder
-  video.style.display = 'none';
-  audio.style.display = 'none';
-  video.controls = false;
-  audio.controls = false;
-  radioPlaceholder.style.display = 'block';
+  // TU PROPIO PROXY EN VERCEL
+  const PROXY_BASE = '/api/proxy?url=';
 
-  // Cargar canales por defecto
+  function initPlayer() {
+    video.style.display = 'none';
+    audio.style.display = 'none';
+    video.controls = false;
+    audio.controls = false;
+    radioPlaceholder.style.display = 'flex';
+    player.classList.remove('error');
+    radioPlaceholder.innerHTML = '';
+  }
+
+  initPlayer();
   loadAllChannels();
 
-  // Evento de búsqueda
   searchInput.addEventListener('input', function () {
     const filtered = allChannels.filter(c =>
       c.name.toLowerCase().includes(this.value.toLowerCase())
@@ -660,22 +471,16 @@
     displayChannels(filtered, currentMode === 'radio');
   });
 
-  // Evento de clic en pestañas
   tabs.forEach(tab => {
     tab.addEventListener('click', function () {
       tabs.forEach(t => t.classList.remove('active'));
       this.classList.add('active');
       const type = this.getAttribute('data-type');
       currentMode = type === 'radio' ? 'radio' : 'tv';
-      if (type === 'all') {
-        loadAllChannels();
-      } else if (type === 'country') {
-        loadChannelsByType('country');
-      } else if (type === 'category') {
-        loadChannelsByType('category');
-      } else if (type === 'radio') {
-        loadRadioCountries();
-      }
+      if (type === 'all') loadAllChannels();
+      else if (type === 'country') loadChannelsByType('country');
+      else if (type === 'category') loadChannelsByType('category');
+      else if (type === 'radio') loadRadioCountries();
     });
   });
 
@@ -687,59 +492,23 @@
     const channelsByType = {
       country: [
         { name: 'Andorra', url: 'https://iptv-org.github.io/iptv/countries/ad.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'United Arab Emirates', url: 'https://iptv-org.github.io/iptv/countries/ae.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
         { name: 'México', url: 'https://iptv-org.github.io/iptv/countries/mx.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
         { name: 'USA', url: 'https://iptv-org.github.io/iptv/countries/us.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Argentina', url: 'https://iptv-org.github.io/iptv/countries/ar.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Reino Unido', url: 'https://iptv-org.github.io/iptv/countries/gb.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Francia', url: 'https://iptv-org.github.io/iptv/countries/fr.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Brasil', url: 'https://iptv-org.github.io/iptv/countries/br.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' }
+        { name: 'A1X', url: 'https://raw.githubusercontent.com/a1xmedia/m3u/main/a1x.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' }
       ],
       category: [
-        { name: 'Animation', url: 'https://iptv-org.github.io/iptv/categories/animation.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Auto', url: 'https://iptv-org.github.io/iptv/categories/auto.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Business', url: 'https://iptv-org.github.io/iptv/categories/business.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Classic', url: 'https://iptv-org.github.io/iptv/categories/classic.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Comedy', url: 'https://iptv-org.github.io/iptv/categories/comedy.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Cooking', url: 'https://iptv-org.github.io/iptv/categories/cooking.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Culture', url: 'https://iptv-org.github.io/iptv/categories/culture.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Documentary', url: 'https://iptv-org.github.io/iptv/categories/documentary.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Education', url: 'https://iptv-org.github.io/iptv/categories/education.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Entertainment', url: 'https://iptv-org.github.io/iptv/categories/entertainment.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Family', url: 'https://iptv-org.github.io/iptv/categories/family.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'General', url: 'https://iptv-org.github.io/iptv/categories/general.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Kids', url: 'https://iptv-org.github.io/iptv/categories/kids.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Legislative', url: 'https://iptv-org.github.io/iptv/categories/legislative.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Lifestyle', url: 'https://iptv-org.github.io/iptv/categories/lifestyle.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Movies', url: 'https://iptv-org.github.io/iptv/categories/movies.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Music', url: 'https://iptv-org.github.io/iptv/categories/music.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'News', url: 'https://iptv-org.github.io/iptv/categories/news.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Outdoor', url: 'https://iptv-org.github.io/iptv/categories/outdoor.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Public', url: 'https://iptv-org.github.io/iptv/categories/public.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Relax', url: 'https://iptv-org.github.io/iptv/categories/relax.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Religious', url: 'https://iptv-org.github.io/iptv/categories/religious.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Science', url: 'https://iptv-org.github.io/iptv/categories/science.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Series', url: 'https://iptv-org.github.io/iptv/categories/series.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Shop', url: 'https://iptv-org.github.io/iptv/categories/shop.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Show', url: 'https://iptv-org.github.io/iptv/categories/show.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
         { name: 'Sports', url: 'https://iptv-org.github.io/iptv/categories/sports.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Travel', url: 'https://iptv-org.github.io/iptv/categories/travel.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Weather', url: 'https://iptv-org.github.io/iptv/categories/weather.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'TDT Channels', url: 'https://api.allorigins.win/raw?url=https://www.tdtchannels.com/lists/tv.json', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
-        { name: 'Makanada', url: 'https://gist.githubusercontent.com/killermina/f85b5faace03d9d0eedd80328ea40ab5/raw/87005309ce21412193fbd3b432bb1b29fdf37b87/makanada.json', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
+        { name: 'News', url: 'https://iptv-org.github.io/iptv/categories/news.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' },
         { name: 'A1X', url: 'https://raw.githubusercontent.com/a1xmedia/m3u/main/a1x.m3u', logo: 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png' }
       ]
     };
 
-    const channels = channelsByType[type];
+    const channels = channelsByType[type] || [];
     channelList.innerHTML = '';
     channels.forEach(channel => {
       const div = document.createElement('div');
       div.className = 'channel';
-      div.innerHTML = `
-        <img src="${channel.logo}" alt="${channel.name}">
-        <span>${channel.name}</span>
-      `;
+      div.innerHTML = `<img src="${channel.logo}" alt="${channel.name}"><span>${channel.name}</span>`;
       div.onclick = () => loadRemoteList(channel.url);
       channelList.appendChild(div);
     });
@@ -748,235 +517,119 @@
   function loadRemoteList(url) {
     channelList.innerHTML = '<div class="loading">Cargando...</div>';
     fetch(url)
-      .then(response => {
-        const contentType = response.headers.get('content-type') || '';
-        if (contentType.includes('application/json') || url.endsWith('.json')) {
-          return response.json();
-        } else {
-          // Para m3u, w3u, php, etc., tratar como texto M3U
-          return response.text().then(text => parseM3U(text));
-        }
-      })
+      .then(r => r.text())
+      .then(text => parseM3U(text))
       .then(data => {
-        if (!Array.isArray(data)) {
-          let channelsData = [];
-          if (data.countries) {
-            data.countries.forEach(country => {
-              country.ambits.forEach(ambit => {
-                channelsData = channelsData.concat(ambit.channels);
-              });
-            });
-          }
-          data = channelsData;
-        }
-        allChannels = data.map(channel => ({
-          name: channel.name,
-          url: channel.options ? channel.options[0].url : channel.iptv_urls ? channel.iptv_urls[0] : channel.url || 'No disponible',
-          logo: channel.logo || 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png'
-        })).filter(channel => channel.url !== 'No disponible'); // Filtrar canales inválidos
+        allChannels = data;
         displayChannels(allChannels, false);
       })
-      .catch(error => {
-        console.error('Error loading list from', url, error);
-        channelList.innerHTML = '<div class="loading">Error al cargar los canales</div>';
+      .catch(() => {
+        channelList.innerHTML = '<div class="loading">Error al cargar</div>';
       });
   }
 
   function parseM3U(content) {
     const channels = [];
     const lines = content.split('\n');
-    let infoLine = null;
+    let info = null;
     for (let line of lines) {
       line = line.trim();
-      if (line.startsWith('#EXTINF:')) {
-        infoLine = line;
-      } else if (line && !line.startsWith('#')) {
-        if (infoLine) {
-          const channel = parseInfoLine(infoLine, line);
-          channels.push(channel);
-        }
-        infoLine = null;
+      if (line.startsWith('#EXTINF:')) info = line;
+      else if (line && !line.startsWith('#') && info) {
+        const name = info.split(',').pop().trim();
+        const logo = (info.match(/tvg-logo="([^"]+)"/) || [])[1] || 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png';
+        channels.push({ name, url: line, logo });
+        info = null;
       }
     }
     return channels;
   }
 
-  function parseInfoLine(infoLine, url) {
-    const channel = { url };
-    const match = infoLine.match(/#EXTINF:[-0-9.]+(.*),(.*)/);
-    if (match) {
-      const attrs = match[1].trim();
-      channel.name = match[2].trim();
-      const attrPairs = attrs.match(/([a-z\-]+)="([^"]*)"/g) || [];
-      attrPairs.forEach(pair => {
-        const [key, value] = pair.split('=');
-        const cleanKey = key.trim().toLowerCase();
-        const cleanValue = value.replace(/"/g, '').trim();
-        if (cleanKey === 'tvg-logo' || cleanKey === 'logo') {
-          channel.logo = cleanValue;
-        } else if (cleanKey === 'tvg-name') {
-          channel.name = cleanValue;
-        }
-      });
-    } else {
-      channel.name = 'Unknown';
-    }
-    if (!channel.logo) channel.logo = 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png';
-    return channel;
-  }
-
-  function loadRadioCountries() {
-    fetch('https://de1.api.radio-browser.info/json/countries')
-      .then(response => response.json())
-      .then(data => {
-        data.sort((a, b) => b.stationcount - a.stationcount);
-        channelList.innerHTML = '';
-        data.forEach(country => {
-          const div = document.createElement('div');
-          div.className = 'channel';
-          const flagUrl = `https://flagcdn.com/28x21/${country.iso_3166_1.toLowerCase()}.png`;
-          div.innerHTML = `
-            <img src="${flagUrl}" alt="${country.name}">
-            <span>${country.name} (${country.stationcount})</span>
-          `;
-          div.onclick = () => loadRadioStations(country.name);
-          channelList.appendChild(div);
-        });
-      })
-      .catch(error => {
-        console.error('Error loading radio countries:', error);
-        channelList.innerHTML = '<div class="loading">Error al cargar los países de radio</div>';
-      });
-  }
-
-  function loadRadioStations(countryName) {
-    fetch(`https://de1.api.radio-browser.info/json/stations/bycountryexact/${encodeURIComponent(countryName)}`)
-      .then(response => response.json())
-      .then(data => {
-        allChannels = data.map(station => ({
-          name: station.name,
-          url: station.url_resolved,
-          logo: station.favicon || 'https://i.postimg.cc/L4xpnNy5/logo11-3-19385.png'
-        })).filter(station => station.url); // Filtrar radios sin URL
-        displayChannels(allChannels, true);
-      })
-      .catch(error => {
-        console.error('Error loading radio stations:', error);
-        channelList.innerHTML = '<div class="loading">Error al cargar las radios</div>';
-      });
-  }
-
   function displayChannels(channels, isRadio = false) {
     channelList.innerHTML = '';
-    if (channels.length === 0) {
-      channelList.innerHTML = '<div class="loading">No se encontraron canales</div>';
-      return;
-    }
-    // Mostrar todos los canales sin paginación, con scroll
-    channels.forEach((channel, index) => {
+    channels.forEach(ch => {
       const div = document.createElement('div');
       div.className = 'channel';
-      div.innerHTML = `
-        <img src="${channel.logo}" alt="${channel.name}" loading="lazy">
-        <span>${channel.name}</span>
-      `;
+      div.innerHTML = `<img src="${ch.logo}" loading="lazy"><span>${ch.name}</span>`;
       div.onclick = () => {
         document.querySelectorAll('.channel').forEach(c => c.classList.remove('selected'));
         div.classList.add('selected');
-        playChannel(channel.url, channel.name, isRadio);
+        playChannel(ch.url, ch.name, isRadio);
       };
       channelList.appendChild(div);
     });
+    initPlayer();
   }
 
-  function playChannel(url, name, isRadio = false) {
-    if (currentHls) {
-      currentHls.destroy();
-      currentHls = null;
-    }
-    if (currentDash) {
-      currentDash.destroy();
-      currentDash = null;
-    }
-    const player = isRadio ? audio : video;
-    const isHlsStream = url.endsWith('.m3u8') || url.endsWith('.m3u') || url.includes('.m3u8') || url.includes('.m3u');
-    const isDashStream = url.endsWith('.mpd');
-    if (isRadio) {
-      video.style.display = 'none';
-      audio.style.display = 'block';
-      radioPlaceholder.style.display = 'block';
-      video.pause();
-      video.src = '';
-      audio.controls = true;
+  function playChannel(originalUrl, name, isRadio = false) {
+    if (currentHls) { currentHls.destroy(); currentHls = null; }
+    if (currentDash) { currentDash.destroy(); currentDash = null; }
+
+    const playerEl = isRadio ? audio : video;
+    const isHls = /\.(m3u8|m3u)/i.test(originalUrl);
+
+    initPlayer();
+    player.classList.remove('error');
+
+    const proxiedUrl = PROXY_BASE + encodeURIComponent(originalUrl);
+
+    if (isRadio || !isHls) {
+      playerEl.src = isRadio ? originalUrl : proxiedUrl;
+      playerEl.style.display = 'block';
+      playerEl.controls = true;
+      playerEl.play().catch(() => showError('No se puede reproducir'));
     } else {
       video.style.display = 'block';
-      audio.style.display = 'none';
-      radioPlaceholder.style.display = 'none';
-      audio.pause();
-      audio.src = '';
       video.controls = true;
-    }
-    if (isDashStream) {
-      currentDash = dashjs.MediaPlayer().create();
-      currentDash.attachVideo(player);
-      currentDash.setSource(url);
-      player.play().catch(error => console.error('Play error:', error));
-    } else if (isHlsStream && Hls.isSupported()) {
+
       currentHls = new Hls({
-        lowLatencyMode: true,
-        backBufferLength: 0,
-        startLevel: -1,
-        enableWorker: false
-      });
-      currentHls.loadSource(url);
-      currentHls.attachMedia(player);
-      currentHls.on(Hls.Events.MANIFEST_PARSED, () => {
-        player.play().catch(error => console.error('Play error:', error));
-      });
-      currentHls.on(Hls.Events.ERROR, (event, data) => {
-        if (data.fatal) {
-          console.error('HLS fatal error:', data);
+        xhrSetup: (xhr, url) => {
+          xhr.withCredentials = false;
         }
       });
-    } else if (isHlsStream && player.canPlayType('application/vnd.apple.mpegurl')) {
-      player.src = url;
-      player.addEventListener('loadedmetadata', () => {
-        player.play().catch(error => console.error('Play error:', error));
-      }, { once: true });
-    } else {
-      player.src = url;
-      player.addEventListener('loadedmetadata', () => {
-        player.play().catch(error => console.error('Play error:', error));
-      }, { once: true });
+
+      currentHls.loadSource(proxiedUrl);
+      currentHls.attachMedia(video);
+
+      currentHls.on(Hls.Events.MANIFEST_PARSED, () => {
+        video.play().catch(() => showError('Error al iniciar'));
+      });
+
+      currentHls.on(Hls.Events.ERROR, (event, data) => {
+        if (data.fatal) {
+          console.error('HLS Error:', data);
+          showError('Stream no disponible');
+        }
+      });
     }
-    const overlayText = isRadio ? 'Escuchando: ' : 'Estás Viendo: ';
+
+    // Audio-only fallback
+    video.addEventListener('loadedmetadata', () => {
+      if (video.videoWidth === 0 || video.videoHeight === 0) {
+        radioPlaceholder.style.display = 'flex';
+        radioPlaceholder.innerHTML = `Solo audio: ${name}`;
+      }
+    }, { once: true });
+
+    // Overlay
     const overlay = document.getElementById('channelOverlay');
-    overlay.innerHTML = overlayText + name;
+    overlay.innerHTML = isRadio ? 'Escuchando: ' : 'Viendo: ' + name;
     overlay.style.display = 'block';
     overlay.classList.add('show');
     setTimeout(() => {
       overlay.classList.remove('show');
-      setTimeout(() => {
-        overlay.style.display = 'none';
-      }, 500);
-    }, 10000);
+      setTimeout(() => overlay.style.display = 'none', 500);
+    }, 8000);
   }
 
-  // Manejo de resize para adaptaciones dinámicas
-  window.addEventListener('resize', () => {
-    // Recalcular alturas si es necesario, pero con flex ya se adapta
-  });
+  function showError(msg) {
+    player.classList.add('error');
+    player.innerHTML = `<div>Error<br><small>${msg}</small></div>`;
+    setTimeout(initPlayer, 4000);
+  }
 
-  // Soporte para teclas (accesibilidad)
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && document.activeElement === searchInput) {
-      // Buscar al presionar enter
-      const filtered = allChannels.filter(c =>
-        c.name.toLowerCase().includes(searchInput.value.toLowerCase())
-      );
-      displayChannels(filtered, currentMode === 'radio');
-    }
-  });
+  // Carga inicial
+  loadAllChannels();
 </script>
 
 </body>
