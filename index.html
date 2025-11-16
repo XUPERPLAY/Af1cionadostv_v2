@@ -162,6 +162,7 @@
       background: #1a1a1a;
       width: 100%;
       padding: 10px;
+      padding-bottom: 120px;
       overflow-y: auto;
       flex: 1 1 auto;
       border-radius: 0;
@@ -184,6 +185,10 @@
       transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
       min-height: 50px;
       box-sizing: border-box;
+    }
+
+    .channel:last-child {
+      margin-bottom: 40px;
     }
 
     .channel img {
@@ -296,6 +301,14 @@
         height: 20px;
       }
 
+      .channelList {
+        padding-bottom: 90px;
+      }
+
+      .channel:last-child {
+        margin-bottom: 30px;
+      }
+
       #channelOverlay {
         bottom: 10px;
         left: 10px;
@@ -321,6 +334,14 @@
         width: 25px;
         height: 25px;
       }
+
+      .channelList {
+        padding-bottom: 100px;
+      }
+
+      .channel:last-child {
+        margin-bottom: 35px;
+      }
     }
 
     /* Móviles landscape */
@@ -333,6 +354,7 @@
       .channelList {
         flex: 0 0 40vh;
         overflow-y: auto;
+        padding-bottom: 70px;
       }
 
       header {
@@ -351,6 +373,10 @@
       .tab {
         padding: 5px 8px;
         font-size: 12px;
+      }
+
+      .channel:last-child {
+        margin-bottom: 20px;
       }
     }
 
@@ -374,6 +400,14 @@
       header h1 {
         font-size: 22px;
       }
+
+      .channelList {
+        padding-bottom: 110px;
+      }
+
+      .channel:last-child {
+        margin-bottom: 40px;
+      }
     }
 
     /* Tablets landscape */
@@ -385,6 +419,11 @@
 
       .channelList {
         flex: 0 0 50vh;
+        padding-bottom: 80px;
+      }
+
+      .channel:last-child {
+        margin-bottom: 30px;
       }
     }
 
@@ -413,6 +452,14 @@
       .channel img {
         width: 45px;
         height: 45px;
+      }
+
+      .channelList {
+        padding-bottom: 130px;
+      }
+
+      .channel:last-child {
+        margin-bottom: 50px;
       }
     }
 
@@ -462,6 +509,7 @@
 
       .channelList {
         padding: 20px;
+        padding-bottom: 160px;
       }
 
       .channel {
@@ -475,6 +523,10 @@
         width: 50px;
         height: 50px;
         margin-right: 20px;
+      }
+
+      .channel:last-child {
+        margin-bottom: 60px;
       }
 
       #channelOverlay {
@@ -491,6 +543,7 @@
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
           gap: 15px;
+          padding-bottom: 60px;
         }
 
         .channel {
@@ -511,6 +564,10 @@
           white-space: normal;
           text-align: center;
         }
+
+        .channel:last-child {
+          margin-bottom: 0;
+        }
       }
     }
 
@@ -523,6 +580,11 @@
 
       .channelList {
         flex: 1;
+        padding-bottom: 120px;
+      }
+
+      .channel:last-child {
+        margin-bottom: 40px;
       }
     }
 
@@ -549,8 +611,8 @@
 </header>
 
 <div id="player">
-  <video id="video" controls autoplay preload="none"></video>
-  <audio id="audio" controls autoplay preload="none"></audio>
+  <video id="video" preload="none"></video>
+  <audio id="audio" preload="none"></audio>
   <div id="radioPlaceholder"></div>
   <div id="channelOverlay"></div>
 </div>
@@ -579,6 +641,13 @@
   let currentHls = null;
   let currentDash = null;
   let currentMode = 'tv';
+
+  // Inicialización para ocultar reproductores y mostrar placeholder
+  video.style.display = 'none';
+  audio.style.display = 'none';
+  video.controls = false;
+  audio.controls = false;
+  radioPlaceholder.style.display = 'block';
 
   // Cargar canales por defecto
   loadAllChannels();
@@ -804,7 +873,7 @@
       return;
     }
     // Mostrar todos los canales sin paginación, con scroll
-    channels.forEach(channel => {
+    channels.forEach((channel, index) => {
       const div = document.createElement('div');
       div.className = 'channel';
       div.innerHTML = `
@@ -832,15 +901,20 @@
     const player = isRadio ? audio : video;
     const isHlsStream = url.endsWith('.m3u8') || url.endsWith('.m3u') || url.includes('.m3u8') || url.includes('.m3u');
     const isDashStream = url.endsWith('.mpd');
-    video.style.display = isRadio ? 'none' : 'block';
-    audio.style.display = isRadio ? 'block' : 'none';
-    radioPlaceholder.style.display = isRadio ? 'block' : 'none';
     if (isRadio) {
+      video.style.display = 'none';
+      audio.style.display = 'block';
+      radioPlaceholder.style.display = 'block';
       video.pause();
       video.src = '';
+      audio.controls = true;
     } else {
+      video.style.display = 'block';
+      audio.style.display = 'none';
+      radioPlaceholder.style.display = 'none';
       audio.pause();
       audio.src = '';
+      video.controls = true;
     }
     if (isDashStream) {
       currentDash = dashjs.MediaPlayer().create();
